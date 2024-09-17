@@ -1,27 +1,32 @@
 @startuml
 'https://plantuml.com/class-diagram
-
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
-
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+class livre{
++titre: string
++id_auteur: id
++digest: long string
++editor: string
++main_characters: [string]
++parution: date
++nb_pages: int
++ISBN: int
++prix: float
+-note: int
+selection()->(eliminated,
+1, 2, finaliste, vainqueur)
+notation()->int or None
+}
+class auteur{
++id_auteur: id
++nom: string
++prenom: string
++oeuvre:[livre]
++cv: long string
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+class selection{
++etape: range(1,4)
++nomination: [livre]
 }
-
+livre"1..n"--"1..1"auteur
+selection"0..1"--"1..n"livre
 @enduml
