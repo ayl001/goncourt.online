@@ -39,5 +39,5 @@ notation(book: livre, etape: 1..4)->int or None
 livre"1..n"--"1..1"editor
 livre"1..n"--"1..1"auteur
 selection"0..1"--"1..n"livre
-
+main_characters"0..n"--"1..1"livre
 @enduml
