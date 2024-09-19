@@ -1,19 +1,25 @@
 @startuml
 'https://plantuml.com/class-diagram
 class livre{
+id: id
 +titre: string
 +id_auteur: id
 +digest: long string
-+editor: string
-+main_characters: [string]
++editor_id: id
++main_characters_id: id
 +parution: date
 +nb_pages: int
 +ISBN: int
 +prix: float
--note: int
-selection()->(eliminated,
-1, 2, finaliste, vainqueur)
-notation()->int or None
+}
+class main_characters {
+id_livre: id
+personnage: string
+}
+class editor {
++id: id
++nom: string
+livres: [livre]
 }
 class auteur{
 +id_auteur: id
@@ -24,9 +30,14 @@ class auteur{
 }
 
 class selection{
-+etape: range(1,4)
++etape: 1..4
 +nomination: [livre]
++ selection(book: livre)->(eliminated,
+1, 2, finaliste, vainqueur)
+notation(book: livre, etape: 1..4)->int or None
 }
+livre"1..n"--"1..1"editor
 livre"1..n"--"1..1"auteur
 selection"0..1"--"1..n"livre
+
 @enduml
