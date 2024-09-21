@@ -38,15 +38,15 @@ notation(book: livre, etape: 1..4)->int or None
 }
 class peone{
     choisir_selection()
-    afficher selection()
+    afficher_selection()
     choisir_livre()
     afficher_digest()
     afficher_bio()
  }
- class juror(peone){
+ class juror{
     vote()
  }
- class president(sworn){
+ class president{
     faire_selection()
     proclamer_resultat()
  }
