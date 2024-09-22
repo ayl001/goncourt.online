@@ -1,5 +1,6 @@
 @startuml
 'https://plantuml.com/class-diagram
+
 class livre{
 id: id
 +titre: string
@@ -12,44 +13,45 @@ id: id
 +ISBN: int
 +prix: float
 }
+
 class main_characters {
-id_livre: id
-personnage: string
+	+id: id
+	+id_livre: id
+	+personnage: string
 }
+
 class editor {
-+id: id
-+nom: string
-livres: [livre]
+	+id: id
+	+nom: string
+	+livres: [livre]
 }
 class auteur{
-+id_auteur: id
-+nom: string
-+prenom: string
-+oeuvre:[livre]
-+cv: long string
+    +id: id
+    +nom: string
+    +prenom: string
+    +oeuvre:[livre]
+    +cv: long string
 }
 
 class selection{
-+etape: 1..4
-+book_id: int
-+vote: int
-+ selection(book: livre)->(eliminated,
-1, 2, finaliste, vainqueur)
-notation(book: livre, etape: 1..4)->int or None
+	+id: id
+    +etape: 1..4
+	+book_id: int
+	+vote: int
 }
 class peone{
-    choisir_selection()
-    afficher_selection()
-    choisir_livre()
-    afficher_digest()
-    afficher_bio()
+    +choisir_selection()
+    +afficher_selection()
+    +choisir_livre()
+    +afficher_digest()
+    +afficher_bio()
  }
  class juror{
-    vote()
+    +vote()
  }
  class president{
-    faire_selection()
-    proclamer_resultat()
+    +faire_selection()
+    +proclamer_resultat()
  }
 livre"1..n"--"1..1"editor
 livre"1..n"--"1..1"auteur
