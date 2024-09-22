@@ -31,7 +31,8 @@ class auteur{
 
 class selection{
 +etape: 1..4
-+nomination: [livre]
++book_id: int
++vote: int
 + selection(book: livre)->(eliminated,
 1, 2, finaliste, vainqueur)
 notation(book: livre, etape: 1..4)->int or None
