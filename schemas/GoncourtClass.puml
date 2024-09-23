@@ -60,3 +60,5 @@ main_characters"0..n"--"1..1"livre
 president--|>"inherits"juror
 juror--|>"inherits"peone
 @enduml
+
+
