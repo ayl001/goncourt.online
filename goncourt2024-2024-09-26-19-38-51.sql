@@ -58,10 +58,28 @@ CREATE TABLE `selection` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `stage` int(11) NOT NULL,
   `book_id` int(11) NOT NULL,
+  `vote` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `book_id` (`book_id`),
+  UNIQUE KEY `book_id_stage` (`book_id`,`stage`),
   CONSTRAINT `selection_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `Livre` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='vote';
 
+INSERT INTO `selection` (`id`, `stage`, `book_id`, `vote`) VALUES
+(1,	1,	1,	0),
+(2,	1,	2,	0),
+(3,	1,	3,	0),
+(4,	1,	4,	0),
+(5,	1,	5,	0),
+(6,	1,	6,	0),
+(7,	1,	7,	0),
+(8,	1,	8,	0),
+(9,	1,	9,	0),
+(10,	1,	10,	0),
+(11,	1,	11,	0),
+(12,	1,	12,	0),
+(13,	1,	13,	0),
+(14,	1,	14,	0),
+(15,	1,	15,	0),
+(16,	1,	16,	0);
 
--- 2024-09-19 12:08:10
+-- 2024-09-26 17:38:51

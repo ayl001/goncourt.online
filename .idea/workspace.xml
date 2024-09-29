@@ -5,12 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5452d058-1f81-4916-a7c3-0543971774a9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/actions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DAO/concours_dao.py" beforeDir="false" afterPath="$PROJECT_DIR$/DAO/concours_dao.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DAO/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/GoncourtClass.puml" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/GoncourtClass.puml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actions.py" beforeDir="false" afterPath="$PROJECT_DIR$/actions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/concours.py" beforeDir="false" afterPath="$PROJECT_DIR$/concours.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goncourt2024-2024-09-19-14-08-10.sql" beforeDir="false" afterPath="$PROJECT_DIR$/goncourt2024-2024-09-26-19-38-51.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goncourt2024-2024-09-20-16-02-35.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,14 +67,18 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.Trois_generations.executor": "Run",
     "Python.actions.executor": "Run",
     "Python.concours.executor": "Run",
     "Python.concours_dao.executor": "Run",
     "Python.main.executor": "Run",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/LambertY/Goncourtbis/goncourt/schemas/GoncourtClass.puml",
+    "last_opened_file_path": "C:/Users/LambertY/OneDrive - Facylities Multi Services/Documents/exoflaskGoncourt/goncourt.online/schemas/GoncourtClass.puml",
     "settings.editor.selected.configurable": "configurable.group.project"
+  },
+  "keyToStringList": {
+    "stardust.markdown.MarkdownSplitEditorSuppressor:keyList": []
   }
 }]]></component>
   <component name="SharedIndexes">
@@ -150,7 +155,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/DAO/concours_dao.py</url>
-          <line>17</line>
+          <line>16</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
