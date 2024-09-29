@@ -1,145 +1,108 @@
-# noinspection PyUnresolvedReferences
-# from actions import juror, peone
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
 from DAO.concours_dao import SelectionDao
 from concours import selection
 
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key'
 
-class peone:
-    GRR = "donnez un entier positif"
-    choix: int
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
-    def choisir_selection(self, stage: int = 0):
-        print(f"Appel de la méthode choisir_selection de {self.__class__.__name__}")
-        if stage == 0:
-            ok = False
-            while not ok:
-                stage = int(input('''De quelle sélection
-                voulez-vous les détails ?
-                1 (première sélection), 
-                2 (deuxième), 
-                3 (finalistes)
-                4 (vainqueur)
-                '''))
-                if ord('1') <= stage <= ord('4'):
-                    ok = True
+# Simuler une base de données d'utilisateurs
+users = {
+    "juror": {"password": "juror_password", "role": "juror"},
+    "president": {"password": "president_password", "role": "president"}
+}
 
-                else:
+class User(UserMixin):
+    def __init__(self, username, role):
+        self.id = username
+        self.role = role
 
-                    print("Entrez un nombre entre 1 et 4")
+@login_manager.user_loader
+def load_user(username):
+    user_info = users.get(username)
+    if user_info:
+        return User(username, user_info["role"])
+    return None
 
-        print(f"Voici la liste des livres et leurs auteurs de la sélection {stage}")
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-        my_selection = SelectionDao()
-        resultat = my_selection.palmares(choix=stage)
-        if resultat:
-            print("id | titre       | Auteur ")
-            for i in range(len(resultat)):
-                print(resultat[i].get('id'), " |   ",
-                      resultat[i].get('titre'),
-                      "    |   ", resultat[i].get('name'),
-                      resultat[i].get('surname'), "    |")
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user_info = users.get(username)
+        if user_info and password == user_info['password']:
+            user = User(username, user_info['role'])
+            login_user(user)
+            return redirect(url_for('dashboard'))
         else:
-            print("Pas encore de résultats")
-        on_joue = True
-        while on_joue:
-            print('Que voulez-vous faire ?')
-            print('1 : consulter le résumé d\'un livre')
-            print('2 : consulter la bio d\'un auteur')
-            print('3 : sortir')
-            choix = input('votre choix :')
-            match choix:
-                case '1':
-                    ident = input('Quel est l\'identifiant du livre ?')
-                    resume = my_selection.digest(ident)
-                    print(resume)
-                case '2':
-                    ident = input('Quel est l\'identifiant du livre ?')
-                    cv = my_selection.cv(ident)
-                    print(cv)
-                case '3':
-                    print("Au revoir")
-                    on_joue = False
+            flash('Nom d\'utilisateur ou mot de passe incorrect', 'danger')
+    return render_template('login.html')
 
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    if current_user.role == "president":
+        return render_template('president_dashboard.html')
+    elif current_user.role == "juror":
+        return render_template('juror_dashboard.html')
+    else:
+        return "Accès refusé", 403
 
-class juror(peone):
-    def vote(self):
+# Route pour choisir une sélection
+@app.route('/choisir_selection', methods=['GET', 'POST'])
+@login_required
+def choisir_selection():
+    if current_user.role in ["juror", "president"]:
+        if request.method == 'POST':
+            stage = int(request.form.get('stage', 0))
+            my_selection = SelectionDao()
+            resultat = my_selection.palmares(choix=stage)
+            return render_template('selection_result.html', resultat=resultat, stage=stage)
+        return render_template('choisir_selection.html')
+    return "Accès refusé", 403
 
-        book_id = -1
-        momento = True
-        while momento or book_id < 0:
-            b_id: str = input('Id du livre pour lequel vous voulez voter')
-            try:
-                book_id = int(b_id)
-            except ValueError as _:
-                print(self.GRR)
-            else:
-                momento = False
-        momento = True
-        stage = -1
-        while momento or stage < 0:
-            stg = input('Pour quelle sélection voulez-vous voter ?')
-            try:
-                stage = int(stg)
-            except ValueError as _:
-                print(self.GRR)
-
-            else:
-                momento = False
-        stage -= 1
-
-        ''' Récupérer l'id de la sélection correspondant 
-        au livre dans la sélection N-1, où prend place le vote, soit ids
-        '''
+# Route pour voter (juror uniquement)
+@app.route('/vote', methods=['POST'])
+@login_required
+def vote():
+    if current_user.role == "juror":
+        book_id = request.form.get('book_id')
+        stage = request.form.get('stage')
         ma_select = SelectionDao()
-        ids = ma_select.get_sel_id(stage=stage, book_id=book_id)
+        ids = ma_select.get_sel_id(stage=int(stage), book_id=int(book_id))
         obj = ma_select.read(ids)
         obj.vote += 1
         if ma_select.update(obj):
-            print('a voté')
+            return "Vote enregistré!"
+    return "Accès refusé", 403
 
+# Route pour ajouter une sélection (president uniquement)
+@app.route('/add_selection', methods=['POST'])
+@login_required
+def add_selection():
+    if current_user.role == "president":
+        book_id = int(request.form['book_id'])
+        tour = int(request.form['tour'])
+        nouvelle_selection = selection(s_id=0, stage=tour, book_id=book_id, vote=0)
+        commis = SelectionDao()
+        commis.create(nouvelle_selection)
+        return "Sélection ajoutée!"
+    return "Accès refusé", 403
 
-class president(juror):
-    def indique_selection(self, tour: int):
-
-        pas_content = True
-        while pas_content:
-
-            alz = input("voulez-vous revoir la sélection précédente ?(o/n)")
-
-            if alz == 'o':
-                self.choisir_selection(tour - 1)
-
-            book_id: int = -1  # Initialisation à une valeur int
-            notyet = True
-
-            while notyet or book_id <= 0:
-                b_id = input(f'''Quel livre voulez-vous 
-                ajouter à la sélection {tour}''')
-                try:
-                    book_id = int(b_id)  # Conversion en int
-                    if book_id > 0:  # Vérification si book_id est positif
-                        notyet = False  # Quitter la boucle si valide
-                except ValueError:
-                    print(self.GRR)
-
-            # À ce point, book_id est garanti d'être un int
-            nouvelle_selection = selection(
-                s_id=0,
-                stage=tour,
-                book_id=book_id,
-                vote=0
-            )
-
-            commis = SelectionDao()
-            commis.create(nouvelle_selection)
-
+# Route pour se déconnecter
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    gomme = SelectionDao()
-    dernier: selection = gomme.read(17)
-    print(dernier)
-    if not gomme.delete(dernier):
-        print("la suppression n'a pas eu lieu")
-
-    mon_lecteur = juror()
-    mon_lecteur.vote()
+    app.run(debug=True)
