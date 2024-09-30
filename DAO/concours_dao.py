@@ -1,7 +1,7 @@
 from typing import Optional
 
-from DAO.dao import Dao
-from concours import selection
+from goncourt_online.DAO.dao import Dao
+from goncourt_online.concours import selection
 
 
 class SelectionDao(Dao):

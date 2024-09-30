@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choisir une Sélection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Choisir une Sélection</h1>
+
+		<form action="{{ url_for('actions.choisir_selection') }}" method="POST">            <label for="stage">Sélectionnez un stage :</label>
+            <select name="stage" id="stage">
+                <option value="1">Stage 1</option>
+                <option value="2">Stage 2</option>
+                <option value="3">Stage 3</option>
+                <!-- Ajoutez d'autres options si nécessaire -->
+            </select>
+
+            <button type="submit">Valider</button>
+        </form>
+
+        <p><a href="{{ url_for('actions.dashboard') }}">Retour au tableau de bord</a></p>
+    </div>
+</body>
+</html>
