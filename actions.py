@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from goncourt_online.DAO.concours_dao import SelectionDao
-from goncourt_online.concours import selection
+from DAO.concours_dao import SelectionDao
+from concours import selection
 
 actions_bp = Blueprint('actions', __name__)
 
@@ -30,6 +30,8 @@ def juror_vote():
         book_id = request.form.get('book_id')  # Assurez-vous que 'book_id' est bien envoyé
         stage = request.form.get('stage')
 
+        flash(f"j'entre dans vote, book_id = {book_id} \n"
+              f"étape = {stage} ")
         my_sel = SelectionDao()
         selection_obj = my_sel.read(book_id)  # Essayez de récupérer l'objet sélection
 
@@ -39,6 +41,8 @@ def juror_vote():
 
         # Incrémentez le vote
         selection_obj.vote += 1
+        print("I increment the vote")
+        flash(f"vote vaut {selection_obj.vote}")
 
         # Mettez à jour l'objet dans la base de données
         if my_sel.update(selection_obj):
@@ -76,7 +80,10 @@ def add_selection():
     if current_user.role == "president":
         book_id = request.form.get('book_id')
         stage = request.form.get('stage')
-        nouvelle_selection = selection(s_id=0, stage=stage, book_id=book_id, vote=0)
+        nouvelle_selection = selection(s_id=0,
+                                       stage= f"{int(stage) + 1}",
+                                       book_id=book_id,
+                                       vote=0)
         commis = SelectionDao()
         commis.create(nouvelle_selection)
         flash('Sélection ajoutée!', 'success')

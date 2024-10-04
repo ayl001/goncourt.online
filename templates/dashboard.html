@@ -6,6 +6,15 @@
     <title>Tableau de Bord</title>
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        <ul class="flashes">
+        {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
     <h1>Tableau de Bord</h1>
     <p>Bienvenue dans votre tableau de bord.</p>
     <nav>

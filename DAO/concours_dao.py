@@ -1,7 +1,7 @@
 from typing import Optional
 
-from goncourt_online.DAO.dao import Dao
-from goncourt_online.concours import selection
+from DAO.dao import Dao
+from concours import selection
 
 
 class SelectionDao(Dao):
@@ -55,11 +55,12 @@ class SelectionDao(Dao):
         :return: True si la mise à jour a pu être réalisée
         """
         query = '''UPDATE selection
-        SET stage = %s, book_id = %s, vote = %s
+        SET id = %s, stage = %s, book_id = %s, vote = %s
         WHERE id = %s'''
-        params = (obj.stage, obj.book_id, obj.vote, obj.s_id,)
+        params = (obj.s_id, obj.stage, obj.book_id, obj.vote, obj.s_id,)
         with self.__class__.connection.cursor() as cursor:
             effet = cursor.execute(query, params)
+            self.__class__.connection.commit()
         if not effet:
             return False
         elif effet == 1:
