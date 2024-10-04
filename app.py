@@ -4,6 +4,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from .actions import actions_bp
 
 app = Flask(__name__)
+
 app.config['SECRET_KEY'] = 'je_suis_un_tricheur'
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 

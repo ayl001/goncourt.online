@@ -34,7 +34,10 @@ th {
 }
 
 tr:nth-child(even) {
-    background-color: #f9f9f9; /* Alternate row colors for readability */
+    background-color: #c0ffff; /* Alternate row colors for readability */
+}
+tr:nth-child(odd) {
+    background-color: #ffc0c0; /* Alternate row colors for readability */
 }
 
 tr:hover {
