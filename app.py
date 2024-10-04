@@ -1,10 +1,11 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from actions import actions_bp
+from .actions import actions_bp
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'je_suis_un_tricheur'
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 login_manager = LoginManager()
 login_manager.init_app(app)
